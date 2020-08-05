@@ -9,7 +9,24 @@ import java.util.Scanner;
 public class Test {
     public static void main(String[] args) {
         //二维数组
-        erwei();
+       // erwei();
+        reverseWords();
+    }
+
+    private static void reverseWords() {
+        String s =" hello    world ";
+
+                String[] strs = s.trim().split(" "); // 删除首尾空格，用空格分割字符串
+
+                StringBuilder res = new StringBuilder();
+                for(int i = strs.length - 1; i >= 0; i--) { // 倒序遍历单词列表
+                    if(strs[i].equals("")) continue; // 遇到空单词则跳过
+                    res.append(strs[i] + " "); // 将单词拼接至 StringBuilder
+                }
+               System.out.println(res.toString().trim()) ; // 转化为字符串，删除尾部空格，并返回
+
+
+
     }
 
     private boolean findSame(int[][] matrix, int target) {
