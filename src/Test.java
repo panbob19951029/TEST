@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -8,6 +9,8 @@ import java.util.*;
 public class Test {
 
 
+    private static char[] c;
+    private static List<String> res;
 
     public static void main(String[] args) {
         //二维数组
@@ -28,32 +31,192 @@ public class Test {
         //uglyNumber();
         //gupiao();
         //pinjieNum();
-        //intToList();
-        PrintJuzhen();
+        //pinjieNum2();
+        //zimupailie();
+        //NumTranslate();
+        //robotRun();
+        //chongfuChar();
+        //twoNums();//map
+        //weiOne();
 
     }
 
-    private static void PrintJuzhen() {
-        int [][] nums =new int[10][10];
-       nums[0][0]=;
-    }
-
-    private static void intToList() {
-        int[] ints ={1,2,3,4,5,6,7,1,2,3,4};
-        List<Integer> list =new ArrayList<Integer>();
-        for(int i : ints){
-            list.add(i);
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if(i==17||i==27){
-                System.out.println(list.get(i));
+    private static void weiOne() {
+        int s =000000000000001011;
+        String s1=Integer.toString(s);
+        char[] str =s1.toCharArray();
+        System.out.println(str);
+        int count=0;
+        for (int i =0;i<str.length;i++) {
+            if (str[i] == '1') {
+                count++;
             }
-            if (i==17) break;
         }
+        System.out.println(count);
+    }
+
+    private static void twoNums() {
+        int [] nums={2,11,7,15};
+        int target =9;
+        Map<Integer,Integer> map =new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                System.out.println(Arrays.toString(new int[]{map.get(complement), i})); ;
+            }
+            map.put(nums[i], i);
+
+        }
+
+}
+
+    private static void chongfuChar() {
+        String s ="abcabcdefgha";
+        Map<Character, Integer> dic = new HashMap<>();
+        int res = 0, tmp = 0;
+        for(int j = 0; j < s.length(); j++) {
+            int i = dic.getOrDefault(s.charAt(j), -1); // 获取索引 i
+
+            dic.put(s.charAt(j), j); // 更新哈希表
+            tmp = tmp < j - i ? tmp + 1 : j - i; // dp[j - 1] -> dp[j]
+            System.out.println("temp:"+tmp);
+            res = Math.max(res, tmp); // max(dp[j - 1], dp[j])
+        }
+        System.out.println(res);
+
+    }
+
+    private static void robotRun() {
+        int m =7 ,n =2 ,k=6;
+            //临时变量visited记录格子是否被访问过
+            boolean[][] visited = new boolean[m][n];
+            System.out.println(dfs(0, 0, m, n, k, visited));
+        }
+
+        public static int dfs(int i, int j, int m, int n, int k, boolean[][] visited) {
+            //i >= m || j >= n是边界条件的判断，k < sum(i, j)判断当前格子坐标是否
+            // 满足条件，visited[i][j]判断这个格子是否被访问过
+            if (i >= m || j >= n || k < sum(i, j) || visited[i][j])
+                return 0;
+            //标注这个格子被访问过
+            visited[i][j] = true;
+            //沿着当前格子的右边和下边继续访问
+            return 1 + dfs(i + 1, j, m, n, k, visited) + dfs(i, j + 1, m, n, k, visited);
+        }
+
+
+
+    //计算两个坐标数字的和
+    private static int sum(int i, int j) {
+        int sum = 0;
+        while (i != 0) {
+            sum += i % 10;
+            i /= 10;
+        }
+        while (j != 0) {
+            sum += j % 10;
+            j /= 10;
+        }
+        return sum;
+    }
+
+    private static void NumTranslate() {
+         int num =12258;
+                String s = String.valueOf(num);
+                int a = 1, b = 1;
+                for(int i = 2; i <= s.length(); i++) {
+                    String tmp = s.substring(i - 2, i);
+                    int c = tmp.compareTo("10") >= 0 && tmp.compareTo("25") <= 0 ? a + b : a;
+                    b = a;//
+                    a = c;
+                }
+                System.out.println(a);
+
+
 
 
     }
 
+    private static void zimupailie() {
+        res = new LinkedList<>();
+
+        String s ="abc";
+        c = s.toCharArray();
+        System.out.println(c);//abc
+        //String[] n=s.split("");
+        //System.out.println(Arrays.toString(n));//[a, b, c]
+        dfs(0);
+        System.out.println(Arrays.toString(res.toArray(new String[res.size()])));
+    }
+
+    private static void dfs(int x) {
+        if(x == c.length - 1) {
+            res.add(String.valueOf(c)); // 添加排列方案
+            return;
+        }
+        HashSet<Character> set = new HashSet<>();
+        for(int i = x; i < c.length; i++) {
+            if(set.contains(c[i])) continue; // 重复，因此剪枝
+            set.add(c[i]);
+            swap(i, x); // 交换，将 c[i] 固定在第 x 位
+            dfs(x + 1); // 开启固定第 x + 1 位字符
+            swap(i, x); // 恢复交换
+        }
+    }
+    static void swap(int a, int b) {
+        char tmp = c[a];
+        c[a] = c[b];
+        c[b] = tmp;
+    }
+            /*static void dfs(int x) {
+                if(x == c.length - 1) {
+                    res.add(String.valueOf(c)); // 添加排列方案
+                    return;
+                }
+                HashSet<Character> set = new HashSet<>();
+                for(int i = x; i < c.length; i++) {
+                    if(set.contains(c[i])) continue; // 重复，因此剪枝
+                    set.add(c[i]);
+                    swap(i, x); // 交换，将 c[i] 固定在第 x 位
+                    dfs(x + 1); // 开启固定第 x + 1 位字符
+                    swap(i, x); // 恢复交换
+                }
+            }
+           static void swap(int a, int b) {
+                char tmp = c[a];
+                c[a] = c[b];
+                c[b] = tmp;
+    }*/
+
+
+    private static void pinjieNum2() {
+        int [] nums={3,30,34,5,9};
+        String[] strs = new String[nums.length];
+        for(int i = 0; i < nums.length; i++)
+            strs[i] = String.valueOf(nums[i]);
+        fastSort(strs, 0, strs.length - 1);
+        StringBuilder res = new StringBuilder();
+        for(String s : strs)
+            res.append(s);
+        System.out.println(res.toString());
+    }
+    static void fastSort(String[] strs, int l, int r) {
+        if(l >= r) return;
+        int i = l, j = r;
+        String tmp = strs[i];
+        while(i < j) {
+            while((strs[j] + strs[l]).compareTo(strs[l] + strs[j]) >= 0 && i < j) j--;
+            while((strs[i] + strs[l]).compareTo(strs[l] + strs[i]) <= 0 && i < j) i++;
+            tmp = strs[i];
+            strs[i] = strs[j];
+            strs[j] = tmp;
+        }
+        strs[i] = strs[l];
+        strs[l] = tmp;
+        fastSort(strs, l, i - 1);
+        fastSort(strs, i + 1, r);
+
+    }
     private static void pinjieNum() {
         int[] nums ={3,30,34,5,9,0};
 
@@ -68,9 +231,6 @@ public class Test {
                 for(String s: strs)
                     sb.append(s);
                 System.out.println(sb.toString());
-
-
-
 
     }
 
@@ -124,7 +284,7 @@ public class Test {
         int [] res =new int[2];
         for(int i:nums){
             if(map.containsKey(i)){
-                int temp = map.get(i);//返回key
+                int temp = map.get(i);//返回key的value
                 map.put(i, temp+1);
 
             }
@@ -132,10 +292,12 @@ public class Test {
                 map.put(i, 1);
             //System.out.println(map);
         }
+        System.out.println("map.keySet():"+map.keySet());//map.keySet():[1, 3, 4, 5, 10]
         int count =0;
-        //遍历Key，如果只出现一次则Key为1
-        for(int i : map.keySet()){
-            if(map.get(i) == 1){
+        //遍历key
+        for(int i : map.keySet()){//i=key,
+            System.out.println("map.get(i)=:"+map.get(i));
+            if(map.get(i) == 1){//获取i的value，如果出现1次则显示
                 res[count]=i;
             count++;}
         }
