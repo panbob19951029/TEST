@@ -18,6 +18,9 @@ public class SetTest {
         for (int n:nums){
             set.add(n);
         }
-       System.out.println(set);
+       //System.out.println(set);
+        String s= "#4S";
+       // System.out.println(s.length());
+
     }
 }
